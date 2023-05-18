@@ -27,7 +27,7 @@ async function run() {
     const toysCollection = client.db("toyMania").collection("toyManiaItems");
 
     app.get("/alltoys", async (req, res) => {
-      const cursor = toysCollection.find();
+      const cursor = toysCollection.find().limit(20);
       const result = await cursor.toArray();
       res.send(result);
     });
