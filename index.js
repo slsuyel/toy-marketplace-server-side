@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -47,6 +47,13 @@ async function run() {
         .sort({ price: 1 })
         .toArray();
       res.send(toys);
+    });
+
+    app.delete("/alltoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toysCollection.deleteOne(query);
+      res.send(result);
     });
 
     await client.db("admin").command({ ping: 1 });
