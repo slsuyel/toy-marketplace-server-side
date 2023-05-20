@@ -39,12 +39,21 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/mytoys/:email", async (req, res) => {
+    /*  app.get("/mytoys/:email", async (req, res) => {
       const toys = await toysCollection
         .find({
           sellerEmail: req.params.email,
         })
-        .sort({ price: 1 })
+        .toArray();
+      res.send(toys);
+    }); */
+    app.get("/mytoys/:email", async (req, res) => {
+      const sortOrder = req.query.sortOrder || "asc";
+      const toys = await toysCollection
+        .find({
+          sellerEmail: req.params.email,
+        })
+        .sort({ price: sortOrder === "asc" ? 1 : -1 })
         .toArray();
       res.send(toys);
     });
